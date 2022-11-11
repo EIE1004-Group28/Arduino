@@ -1,0 +1,145 @@
+#include <DFRobot_NeoPixel.h>
+
+// Dynamic variables
+volatile float mind_n_speed, mind_n_turn_speed, mind_n_Biantai, mind_n_irL, mind_n_irM,
+               mind_n_irR;
+// Function declaration
+void DF_moveForward();
+void DF_moveBackward();
+void DF_moveRight();
+void DF_Super_Turn_Left();
+void DF_Super_Turn_Right();
+void DF_moveLeft();
+void DF_moveStop();
+void DF_Optional_Turn_Right();
+void DF_Optional_Turn_Left();
+// Create an object
+DFRobot_NeoPixel neoPixel_8;
+
+
+// Main program start
+void setup() {
+	Serial.begin(9600);
+	neoPixel_8.begin(8, 5, 255);
+	mind_n_speed = 255;
+	mind_n_turn_speed = 215;
+	DF_moveForward();
+	delay(300);
+	DF_Super_Turn_Right();
+	delay(110);
+	DF_moveForward();
+	delay(500);
+}
+void loop() {
+	if ((Serial.available())) {
+		mind_n_Biantai = Serial.read();
+		Serial.println(mind_n_Biantai);
+		if (((mind_n_Biantai==48) || ((mind_n_Biantai==49) || ((mind_n_Biantai==50) || (mind_n_Biantai==51))))) {
+			DF_Optional_Turn_Right();
+			delay(180);
+			DF_moveForward();
+			delay(200);
+			DF_Optional_Turn_Right();
+			delay(180);
+			DF_moveForward();
+			delay(100);
+		}
+	}
+	else {
+		DF_moveForward();
+		delay(20);
+		mind_n_irL = analogRead(A3);
+		mind_n_irM = analogRead(A4);
+		mind_n_irR = analogRead(A5);
+		if (((mind_n_irL<350) && (mind_n_irR<350))) {
+			neoPixel_8.setRangeColor(0, 3, 0x0000FF);
+			DF_moveForward();
+			delay(600);
+		}
+		if (((mind_n_irL>350) && (mind_n_irR<350))) {
+			neoPixel_8.setRangeColor(0, 3, 0xFF0000);
+			DF_Optional_Turn_Left();
+			delay(50);
+		}
+		if (((mind_n_irL<350) && (mind_n_irR>350))) {
+			neoPixel_8.setRangeColor(0, 3, 0x00FF00);
+			DF_Optional_Turn_Right();
+			delay(50);
+		}
+	}
+}
+
+
+// Custom function
+void DF_moveForward() {
+	analogWrite(5, mind_n_speed);
+	analogWrite(6, 0);
+	analogWrite(9, mind_n_speed);
+	analogWrite(10, 0);
+	digitalWrite(A0, LOW);
+	digitalWrite(13, LOW);
+}
+void DF_moveBackward() {
+	analogWrite(5, 0);
+	analogWrite(6, mind_n_speed);
+	analogWrite(9, 0);
+	analogWrite(10, mind_n_speed);
+	digitalWrite(A0, HIGH);
+	digitalWrite(13, HIGH);
+}
+void DF_moveRight() {
+	analogWrite(5, 0);
+	analogWrite(6, 0);
+	analogWrite(9, mind_n_speed);
+	analogWrite(10, 0);
+	digitalWrite(A0, LOW);
+	digitalWrite(13, HIGH);
+}
+void DF_Super_Turn_Left() {
+	analogWrite(5, mind_n_speed);
+	analogWrite(6, 0);
+	analogWrite(9, 0);
+	analogWrite(10, mind_n_speed);
+	digitalWrite(A0, LOW);
+	digitalWrite(13, HIGH);
+}
+void DF_Super_Turn_Right() {
+	analogWrite(5, 0);
+	analogWrite(6, mind_n_speed);
+	analogWrite(9, mind_n_speed);
+	analogWrite(10, 0);
+	digitalWrite(A0, LOW);
+	digitalWrite(13, HIGH);
+}
+void DF_moveLeft() {
+	analogWrite(5, mind_n_speed);
+	analogWrite(6, 0);
+	analogWrite(9, 0);
+	analogWrite(10, 0);
+	digitalWrite(A0, HIGH);
+	digitalWrite(13, LOW);
+}
+void DF_moveStop() {
+	analogWrite(5, 0);
+	analogWrite(6, 0);
+	analogWrite(9, 0);
+	analogWrite(10, 0);
+	digitalWrite(A0, HIGH);
+	digitalWrite(13, HIGH);
+}
+void DF_Optional_Turn_Right() {
+	analogWrite(5, 0);
+	analogWrite(6, mind_n_turn_speed);
+	analogWrite(9, mind_n_speed);
+	analogWrite(10, 0);
+	digitalWrite(A0, LOW);
+	digitalWrite(13, HIGH);
+}
+void DF_Optional_Turn_Left() {
+	analogWrite(5, mind_n_speed);
+	analogWrite(6, 0);
+	analogWrite(9, 0);
+	analogWrite(10, mind_n_turn_speed);
+	digitalWrite(A0, LOW);
+	digitalWrite(13, HIGH);
+}
