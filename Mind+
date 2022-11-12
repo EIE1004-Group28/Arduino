@@ -34,7 +34,7 @@ void loop() {
 	if ((Serial.available())) {
 		mind_n_Biantai = Serial.read();
 		Serial.println(mind_n_Biantai);
-		if (((mind_n_Biantai==48) || ((mind_n_Biantai==49) || ((mind_n_Biantai==50) || (mind_n_Biantai==51))))) {
+		if ((mind_n_Biantai==49)) {
 			DF_Optional_Turn_Right();
 			delay(180);
 			DF_moveForward();
