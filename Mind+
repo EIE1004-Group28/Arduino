@@ -59,12 +59,10 @@ void loop() {
 		if (((mind_n_irL>350) && (mind_n_irR<350))) {
 			neoPixel_8.setRangeColor(0, 3, 0xFF0000);
 			DF_Optional_Turn_Left();
-			delay(50);
 		}
 		if (((mind_n_irL<350) && (mind_n_irR>350))) {
 			neoPixel_8.setRangeColor(0, 3, 0x00FF00);
 			DF_Optional_Turn_Right();
-			delay(50);
 		}
 	}
 }
